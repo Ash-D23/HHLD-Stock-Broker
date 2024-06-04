@@ -1,0 +1,27 @@
+{
+  "name": "market_data_service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devstart": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@opensearch-project/opensearch": "^2.8.0",
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.6",
+    "dotenv": "^16.4.5",
+    "expess": "^0.0.1-security",
+    "nodemon": "^3.1.0",
+    "path": "^0.12.7",
+    "protobufjs": "^7.3.0",
+    "socket.io": "^4.7.5",
+    "upstox-js-sdk": "^2.4.0",
+    "ws": "^8.17.0"
+  }
+}

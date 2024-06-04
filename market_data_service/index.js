@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
         return
     }
     
-    const url = 'https://api.upstox.com/v2/login/authorization/token';
+    const url = process.env.upstoxURL;
     const headers = {
     'accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -89,7 +89,6 @@ io.on('connection', (socket) => {
 
     apiInstance.logout(apiVersion, (error, data, response) => {
         if (error) {
-            console.error(error);
             res.status(500).json({ message: error.message})
         } else {
             res.status(200).json(data)

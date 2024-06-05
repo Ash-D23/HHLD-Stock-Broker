@@ -4,7 +4,7 @@ import { useActiveStockDataStore } from '../zustand/useActiveStockDataStore'
 import axios from 'axios'
 import { useUserAccessDataStore } from '../zustand/useUserAccessDataStore'
 
-const PlaceOrder = ({ closeOrderModal, modalType }) => {
+const PlaceOrder = ({ closeOrderModal, modalType, setActiveTab }) => {
 
   const { activeStock, activeWatchlistStockData } = useActiveStockDataStore()
   const { accessToken } = useUserAccessDataStore()
@@ -37,7 +37,9 @@ const PlaceOrder = ({ closeOrderModal, modalType }) => {
         orderType: orderType,
         order: modalType
       })
-      console.log(res)
+      
+      setActiveTab('Orders')
+      closeOrderModal()
 
     }catch(err){
       console.log(err)

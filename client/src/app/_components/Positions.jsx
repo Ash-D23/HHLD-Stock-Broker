@@ -12,6 +12,7 @@ const Positions = () => {
             const res = await axios.post('http://localhost:4000/stock/getPositions',{
                 accessToken: accessToken
             })
+            console.log(res)
             setPosition(res?.data?.data)
         }catch(err){
             console.log(err)
@@ -33,13 +34,16 @@ const Positions = () => {
                             Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Quantity
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Price
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Total
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            P&L
                         </th>
                     </tr>
                 </thead>
@@ -51,13 +55,16 @@ const Positions = () => {
                                     {position.tradingSymbol}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {position.status}
-                                </td>
-                                <td class="px-6 py-4">
                                     {position.quantity}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {`Rs. ${position.price}`}
+                                    {`Rs. ${position.buyPrice}`}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {`Rs. ${position.quantity*position.buyPrice}`}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {`Rs. ${position.quantity*position.buyPrice}`}
                                 </td>
                             </tr>
                         ))

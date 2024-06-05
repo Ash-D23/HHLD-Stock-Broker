@@ -48,7 +48,7 @@ const Dashboard = () => {
    <div className='h-screen flex box-content'>
        <div className='w-1/5 relative'>
            <SideBar openOrderModal={openOrderModal} closeOrderModal={closeOrderModal} />
-           { isModal ? <PlaceOrder closeOrderModal={closeOrderModal} modalType={modalType} /> : null }
+           { isModal ? <PlaceOrder closeOrderModal={closeOrderModal} modalType={modalType} setActiveTab={setActiveTab}/> : null }
        </div>
        <div className='w-4/5 h-screen'>
             <div className='p-2 h-2/12'>

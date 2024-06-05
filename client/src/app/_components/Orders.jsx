@@ -13,6 +13,7 @@ const Orders = () => {
             const res = await axios.post('http://localhost:8088/orders/get', {
                 accessToken: accessToken 
             })
+            console.log(res)
             updateOrders(res?.data?.message?.data)
         }catch(err){
             console.log(err)
@@ -58,7 +59,7 @@ const Orders = () => {
                                     {order.quantity}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {`Rs. ${order.price}`}
+                                    {`Rs. ${order.averagePrice}`}
                                 </td>
                             </tr>
                         ))

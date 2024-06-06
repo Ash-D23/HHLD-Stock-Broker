@@ -1,18 +1,20 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useUserAccessDataStore } from '../zustand/useUserAccessDataStore'
+import io from "socket.io-client";
 
 const Positions = () => {
 
     const [positions, setPosition] = useState([])
     const { accessToken } = useUserAccessDataStore()
+    const [socket, setSocket] = useState(null)
+    const [currentPositionsData, setCurrentPositionsData] = useState({})
 
     const getPositions = async () => {
         try{
             const res = await axios.post('http://localhost:4000/stock/getPositions',{
                 accessToken: accessToken
             })
-            console.log(res)
             setPosition(res?.data?.data)
         }catch(err){
             console.log(err)
@@ -22,6 +24,58 @@ const Positions = () => {
     useEffect(() => {
         getPositions()
     }, [])
+
+    useEffect(() => {
+        if(positions.length !== 0){
+            const newSocket = io(`${process.env.NEXT_PUBLIC_MD_BE_URI}`);
+            setSocket(newSocket);
+
+            const instrumentKeys = positions.map((data) => data.instrumentToken)
+
+            if(instrumentKeys){
+                newSocket.emit('market data', instrumentKeys, accessToken)
+            }
+
+            newSocket.on('market data', (msg) => {
+                const data = JSON.parse(msg)
+                const arr = Object.keys(data.feeds)
+        
+                const temp = {}
+        
+                for(let index of arr){
+                    const key = index.split("|")[0]
+                    if(key==="NSE_EQ"){
+                        temp[index] = data?.feeds[index]?.ff?.marketFF?.ltpc?.ltp
+                    }else{
+                        temp[index] = data?.feeds[index]?.ff?.indexFF?.ltpc?.ltp
+                    }
+                    
+                }
+
+                setCurrentPositionsData(temp)
+            
+            })
+        }
+
+        return () => {
+            if(socket){
+                socket.close()
+            }
+        }
+    }, [positions])
+
+    const CalculatePL = (position) => {
+
+        if(!currentPositionsData[position.instrumentToken]){
+            return '-'
+        }
+
+        const pandl = (position.quantity*currentPositionsData[position.instrumentToken]) - (position.quantity*position.buyPrice)
+
+        const positive = pandl > 0 ? true : false
+        return  `${positive ? '+' : ''}${pandl.toFixed(2)}`
+    }
+
 
   return (
     <div className='p-4 overflow-y-scroll'>
@@ -64,7 +118,7 @@ const Positions = () => {
                                     {`Rs. ${position.quantity*position.buyPrice}`}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {`Rs. ${position.quantity*position.buyPrice}`}
+                                    {CalculatePL(position)}
                                 </td>
                             </tr>
                         ))

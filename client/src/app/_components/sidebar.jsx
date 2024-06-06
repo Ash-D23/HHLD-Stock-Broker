@@ -7,9 +7,8 @@ import { useActiveStockDataStore } from '../zustand/useActiveStockDataStore';
 import AddWatchlistModal from './AddWatchlistModal';
 import { useUserAccessDataStore } from '../zustand/useUserAccessDataStore';
 
-const Sidebar = ({ openOrderModal, closeOrderModal }) => {
+const Sidebar = ({ openOrderModal, closeOrderModal,setActiveTab }) => {
 
-   const [activeTab, setActiveTab] = useState('watchlists');
    const [activeWatchlist, setActiveWatchlist] = useState(null);
    const [suggestions, setSuggestions] = useState([]);
    const [newStock, setNewStock] = useState(null);
@@ -18,11 +17,14 @@ const Sidebar = ({ openOrderModal, closeOrderModal }) => {
    const { watchlists, updateWatchlists } = useWatchlistsDataStore();
    const { activeStock, activeWatchlistStockData, setActiveWatchlistStockData, updateActiveStock } = useActiveStockDataStore()
    const [showWatchlistModal, setWatchlistModal] = useState(false)
-   const [watchlistTitle, setwatchlistTitle] = useState('');
-   const { accessToken, userData, setAccessToken } = useUserAccessDataStore()
-
+   const { accessToken, userData } = useUserAccessDataStore()
 
    const closeWatchListModal = () => setWatchlistModal(false)
+
+   const handleStockClick = (stock) => {
+    setActiveTab('Dashboard')
+    updateActiveStock(stock)
+   }
 
    const handleDeleteStockFromWatchlist = async (stock) => {
         try{
@@ -42,20 +44,13 @@ const Sidebar = ({ openOrderModal, closeOrderModal }) => {
         }
    }
 
-   const handleTabClick = (tab) => {
-       setActiveTab(tab);
-       setActiveWatchlist(null);
-   };
-
    const handleWatchlistClick = (watchlist) => {
-       setActiveTab('watchlist');
        setActiveWatchlist(watchlist);
        wsConnectToBE(watchlist.stocks)
    };
 
    const handleAddWatchlist = async (watchlistTitleText) => {
        try {
-           setwatchlistTitle(watchlistTitleText);
            const res = await axios.post(`${process.env.NEXT_PUBLIC_WL_BE_URI}/watchlists/add`, {
                title : watchlistTitleText,
                user_id : userData?.user_id
@@ -214,7 +209,7 @@ const Sidebar = ({ openOrderModal, closeOrderModal }) => {
                        {watchlists.map((watchlist, index) => (
                            <li
                                key={index}
-                               className={`cursor-pointer text-black mr-3 p-1 px-1.5 ${activeTab === 'watchlist' &&
+                               className={`cursor-pointer text-black mr-3 p-1 px-1.5 ${
                                    activeWatchlist.title === watchlist.title
                                    ? 'font-semibold bg-gray-50 border rounded'
                                    : ''
@@ -228,7 +223,7 @@ const Sidebar = ({ openOrderModal, closeOrderModal }) => {
                    </ul>
                </div>
            </div>
-           {activeTab === 'watchlist' && (
+           { (
                <div className="bg-white h-full overflow-y-scroll">
                    <div className="flex justify-between items-center mb-1 p-2 pt-4 pl-3">
                        <div className="flex relative items-center">
@@ -269,7 +264,7 @@ const Sidebar = ({ openOrderModal, closeOrderModal }) => {
                            {watchlists
                                .find((watchlist) => watchlist.title === activeWatchlist.title)
                                ?.stocks.map((stock, index) => (
-                                <div key={index} onClick={() => updateActiveStock(stock)} className={`${activeStock === stock ? 'bg-gray-200' : ''} flex justify-between items-center p-4 pl-3 cursor-pointer`}>
+                                <div key={index} onClick={() => handleStockClick(stock)} className={`${activeStock === stock ? 'bg-gray-200' : ''} flex justify-between items-center p-4 pl-3 cursor-pointer`}>
                                     <div className='w-4/5'>
                                         <p className="text-black" >{stock?.name}</p>
                                         <p className="text-gray-600 text-xs" >{stock?.instrumentKey}</p>

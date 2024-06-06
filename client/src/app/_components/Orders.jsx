@@ -24,6 +24,7 @@ const Orders = () => {
         getOrders()
     }, [])
 
+
   return (
     <div className='p-4 overflow-y-scroll'>
 
@@ -33,6 +34,9 @@ const Orders = () => {
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Order
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Type
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -49,9 +53,12 @@ const Orders = () => {
                     {
                         orders?.map((order) => (
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {order.tradingSymbol}
-                                </th>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {order.transactionType}
+                                </td>
                                 <td class="px-6 py-4">
                                     {order.status}
                                 </td>

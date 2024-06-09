@@ -14,7 +14,7 @@ Next JS, Node JS, GraphQL, Socket IO, MongoDB, OpenSearch, AWS, Upstox SDK
 ### Functional Requirements
 - Authentication: Login with Upstox and Logout
 - Watchlist: Add and Remove Stocks
-- Search: Search Stocks and View Stock Details (Charts, Price, OHLC and market Data realtime)
+- Search: Search Stocks and View Stock Details (Charts, Price, OHLC, and market Data real-time)
 - Place Orders: Buy and Sell Stocks
 - Risk management Service
 
@@ -29,5 +29,5 @@ Next JS, Node JS, GraphQL, Socket IO, MongoDB, OpenSearch, AWS, Upstox SDK
 - Search Service
 - Watchlist Service
 
-
 ### Demo
+[![Watch the video](https://img.youtube.com/vi/uHaqj9d7czM/0.jpg)](https://www.youtube.com/watch?v=uHaqj9d7czM)

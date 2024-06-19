@@ -13,7 +13,7 @@ const Portfolio = () => {
 
     const getHoldings = async () => {
         try{
-            const res = await axios.post('http://localhost:4000/stock/getHoldings', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_MD_BE_URI}/stock/getHoldings`, {
                 accessToken: accessToken
             })
 
@@ -128,7 +128,7 @@ const Portfolio = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {holdingsData?.map((data) => (<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            {holdingsData?.map((data) => (<tr key={data.id} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {data.companyName}
                                 </td>

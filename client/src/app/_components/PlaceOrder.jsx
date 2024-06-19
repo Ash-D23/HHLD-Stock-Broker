@@ -16,7 +16,7 @@ const PlaceOrder = ({ closeOrderModal, modalType, setActiveTab }) => {
 
   const getMarketStats = async () => {
     try{
-      const res = await axios.post('http://localhost:4000/stock/getOHLCData', {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_MD_BE_URI}/stock/getOHLCData`, {
         symbol: activeStock?.instrumentKey,
         accessToken: accessToken
       })
@@ -29,7 +29,7 @@ const PlaceOrder = ({ closeOrderModal, modalType, setActiveTab }) => {
 
   const handleSubmit = async () => {
     try{
-      const res = await axios.post('http://localhost:8088/orders/add', {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_OM_BE_URI}/orders/add`, {
         instrumentKey: activeStock?.instrumentKey,
         accessToken: accessToken,
         quantity: quantity,

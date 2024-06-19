@@ -33,7 +33,7 @@ const Dashboard = () => {
 
     const Logouthandler = async () => {
         try{
-            const res = await axios.post('http://localhost:4000/logout',{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_MD_BE_URI}/logout`,{
                 accessToken: accessToken
             })
             setShowprofile(false)

@@ -44,7 +44,7 @@ const StockChart = ({ openOrderModal }) => {
 
   const getIntradayChart = async () => {
     try{
-      const res = await axios('http://localhost:4000/chart/getIntraDayData', {
+      const res = await axios(`${process.env.NEXT_PUBLIC_MD_BE_URI}/chart/getIntraDayData`, {
         params: {
           symbol: activeStock?.instrumentKey
         }

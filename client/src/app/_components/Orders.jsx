@@ -10,7 +10,7 @@ const Orders = () => {
 
     const getOrders = async () => {
         try{
-            const res = await axios.post('http://localhost:8088/orders/get', {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_OM_BE_URI}/orders/get`, {
                 accessToken: accessToken 
             })
             console.log(res)
@@ -52,7 +52,7 @@ const Orders = () => {
                 <tbody>
                     {
                         orders?.map((order) => (
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr key={order.id} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {order.tradingSymbol}
                                 </td>

@@ -15,7 +15,7 @@ export default function Home() {
   }, [accessToken])
 
   const LoginToUpstoxHandler = () => {
-    router.push("https://api.upstox.com/v2/login/authorization/dialog?response_type=code&client_id=a73b5ab0-cdb4-420e-b20a-3a9fe4fa706c&redirect_uri=http%3A%2F%2Fhhld-stock-broker.vercel.app%2Faccess")
+    router.push("https://api.upstox.com/v2/login/authorization/dialog?response_type=code&client_id=a73b5ab0-cdb4-420e-b20a-3a9fe4fa706c&redirect_uri=https%3A%2F%2Fhhld-stock-broker.vercel.app%2Faccess")
   }
 
   return (

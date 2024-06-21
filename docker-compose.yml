@@ -1,0 +1,36 @@
+version: '3.8'
+
+
+services:
+ market-data:
+   image: ashutosh23k/stock-market-data:lts
+   build:
+     context: ./market_data_service # Path to the backend Dockerfile
+   ports:
+     - "4000:4000"
+
+
+ order-manager:
+   image: ashutosh23k/stock-order-manager:lts
+   build:
+     context: ./order_mgr_service # Path to the backend Dockerfile
+   ports:
+     - "8088:8088"
+
+
+ watchlist:
+   image: ashutosh23k/stock-watchlist:lts
+   build:
+     context: ./watchlist_service # Path to the backend Dockerfile
+   ports:
+     - "8085:8085" 
+
+
+ stock-client:
+   image: ashutosh23k/stock-client:lts
+   build:
+     context: ./client # Path to the frontend Dockerfile
+   ports:
+     - "3000:3000"
+   depends_on:
+     - market-data # Wait for backend service to be ready before starting frontend

@@ -37,13 +37,15 @@ const LoadStockData = async (req, res) => {
          node: host
        });
 
-       var index_name = "all_stocks";
+       var index_name = "mini_stocks";
        var stock_data = {
          instrumentKey: row["instrument_key"],
          name: row["name"],
          type: row["instrument_type"],
          exchange: row["exchange"]
        };
+
+       console.log(stock_data)
 
        count -= 1
 
@@ -58,7 +60,7 @@ const LoadStockData = async (req, res) => {
          refresh: true,
        });
 
-       console.log(response)
+       console.log(response.statusCode)
 
      } catch (error) {
        console.error(`Error inserting row: ${JSON.stringify(row)}, Error: ${error}`);

@@ -2,6 +2,7 @@ import fs from 'fs';
 import { parse } from 'csv-parse';
 // import { PrismaClient } from '@prisma/client';
 import { Client } from "@opensearch-project/opensearch";
+import stock from '../models/stock.model.js';
 
 const LoadStockData = async (req, res) => {
 //  const prisma = new PrismaClient();
@@ -29,15 +30,15 @@ const LoadStockData = async (req, res) => {
     //      }
     //    });
     //    console.log(`Inserted row: ${JSON.stringify(row)}`);
-       console.log('Adding to OpenSearch');
+      //  console.log('Adding to OpenSearch');
 
-       //sending data to opensearch
-       var host = process.env.OpenSearchHost;
-       var client = new Client({
-         node: host
-       });
+      //  //sending data to opensearch
+      //  var host = process.env.OpenSearchHost;
+      //  var client = new Client({
+      //    node: host
+      //  });
 
-       var index_name = "mini_stocks";
+      //  var index_name = "mini_stocks";
        var stock_data = {
          instrumentKey: row["instrument_key"],
          name: row["name"],
@@ -45,22 +46,10 @@ const LoadStockData = async (req, res) => {
          exchange: row["exchange"]
        };
 
+       // Add to MongoDB
        console.log(stock_data)
-
-       count -= 1
-
-       if(count===0){
-        return
-       }
-
-       var response = await client.index({
-        // id: title, // (let elastic search take care of id)
-         index: index_name,
-         body: stock_data,
-         refresh: true,
-       });
-
-       console.log(response.statusCode)
+       const res = await stock.create(stock_data);
+       console.log(res)
 
      } catch (error) {
        console.error(`Error inserting row: ${JSON.stringify(row)}, Error: ${error}`);
@@ -73,6 +62,21 @@ const LoadStockData = async (req, res) => {
    .on('error', (error) => {
      console.error('Error parsing CSV:', error);
    });
+}
+
+export const getStockList = async (req, res) => {
+
+  const searchTerm = req.query.q
+
+  try {
+      const allStocks = await stock.find();
+
+      const result = allStocks.filter((data) => data?.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
+      return res.status(200).json(result);
+  } catch (error) {
+      return res.status(500).json({ error: 'Server error' });
+  }
 }
 
 export default LoadStockData;

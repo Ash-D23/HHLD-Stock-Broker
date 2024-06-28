@@ -12,7 +12,7 @@ const Sidebar = ({ openOrderModal, closeOrderModal,setActiveTab }) => {
    const [activeWatchlist, setActiveWatchlist] = useState(null);
    const [suggestions, setSuggestions] = useState([]);
    const [newStock, setNewStock] = useState(null);
-   const [stocknput, setStockInput] = useState('')
+   const [stockInput, setStockInput] = useState('')
    const [socket, setSocket] = useState(null);
    const { watchlists, updateWatchlists } = useWatchlistsDataStore();
    const { activeStock, activeWatchlistStockData, setActiveWatchlistStockData, updateActiveStock } = useActiveStockDataStore()
@@ -101,11 +101,12 @@ const Sidebar = ({ openOrderModal, closeOrderModal,setActiveTab }) => {
    const searchStocks = async (e) => {
        setStockInput(e.target.value);
        const stockToBeSearched = e.target.value;
-       if (stocknput?.length > 2) {
+       if (stockInput?.length > 2) {
            try {
-               const res = await axios.get(`${process.env.NEXT_PUBLIC_AG_URI}`, { params: { q: stockToBeSearched } });
-               const stockDetails = res.data.map(stock => ({ name: stock._source.name, instrumentKey: stock._source.instrumentKey })); // Extract stock names
-               setSuggestions(stockDetails);
+               const res = await axios.get(`${process.env.NEXT_PUBLIC_STOCK_URI}`, { params: { q: stockToBeSearched } });
+            //    const stockDetails = res.data.map(stock => ({ name: stock._source.name, instrumentKey: stock._source.instrumentKey })); // Extract stock names
+               console.log(res)
+               setSuggestions(res.data);
            } catch (error) {
                console.log("Error in searching : ", error.message)
            }
@@ -206,11 +207,11 @@ const Sidebar = ({ openOrderModal, closeOrderModal,setActiveTab }) => {
                </div>
                <div>
                    <ul className="flex overflow-x-auto p-1 pl-0">
-                       {watchlists.map((watchlist, index) => (
+                       {watchlists?.map((watchlist, index) => (
                            <li
                                key={index}
                                className={`cursor-pointer text-black mr-3 p-1 px-1.5 ${
-                                   activeWatchlist.title === watchlist.title
+                                   activeWatchlist?.title === watchlist?.title
                                    ? 'font-semibold bg-gray-50 border rounded'
                                    : ''
                                    }`}
@@ -231,7 +232,7 @@ const Sidebar = ({ openOrderModal, closeOrderModal,setActiveTab }) => {
                                type="text"
                                className="border border-gray-400 mr-2 p-1 text-black"
                                placeholder="New Stock"
-                               value={stocknput}
+                               value={stockInput}
                                onChange={searchStocks}
                            />
                            {suggestions.length > 0 && (

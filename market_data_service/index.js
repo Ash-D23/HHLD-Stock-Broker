@@ -10,6 +10,7 @@ import chartRouter from './routes/charts.route.js'
 import http from "http";
 import { Server } from "socket.io";
 import axios from 'axios';
+import connectToMongoDB from './db/connectToMongoDB.js';
 
 dotenv.config();
 const app = express();
@@ -132,5 +133,6 @@ io.on('connection', (socket) => {
  });
  
  server.listen(port, (req, res) => {
+    connectToMongoDB()
     console.log(`Server is running at ${port}`);
  })
